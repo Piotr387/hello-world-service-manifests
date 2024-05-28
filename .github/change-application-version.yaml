@@ -1,0 +1,53 @@
+name: Change application version in manifest to be deployed on certain environment
+
+on:
+  workflow_dispatch:
+    inputs:
+      service_name:
+        description: 'Select service'
+        required: true
+        type: choice
+        options:
+          - hello-world-service
+      image:
+        description: 'Image url from image Registry'
+        required: true
+      environment:
+        description: 'Select environment'
+        required: true
+        type: choice
+        options:
+          - dev
+          - production
+
+jobs:
+  update-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Print new image value
+        run: echo "New image is ${{ github.event.inputs.image }}"
+
+      - name: Install yq
+        run: |
+          sudo curl -L https://github.com/mikefarah/yq/releases/download/v4.35.2/yq_linux_amd64 -o /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Update deployment file.yaml
+        run: |
+          yq e '.spec.template.spec.containers[] | select(.name == "${{ github.event.inputs.service_name }}-container").image = "${{ github.event.inputs.image }}"' ${GITHUB_WORKSPACE}/${{ github.event.inputs.service_name }}/deployment-${{ github.event.inputs.environment }}.yaml
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add ${GITHUB_WORKSPACE}/${{ github.event.inputs.service_name }}/deployment-${{ github.event.inputs.environment }}.yaml
+          git commit -m "Update ${GITHUB_WORKSPACE}/${{ github.event.inputs.service_name }}/deployment-${{ github.event.inputs.environment }}.yaml with new image"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.LOGIN_TOKEN }}
+          branch: main
