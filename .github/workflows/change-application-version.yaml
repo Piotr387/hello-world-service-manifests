@@ -37,17 +37,14 @@ jobs:
 
       - name: Update deployment file.yaml
         run: |
-          yq e '.spec.template.spec.containers[] | select(.name == "${{ github.event.inputs.service_name }}-container").image = "${{ github.event.inputs.image }}"' ${GITHUB_WORKSPACE}/${{ github.event.inputs.service_name }}/deployment-${{ github.event.inputs.environment }}.yaml
-
-      - name: Debug modified file
-        run: cat ${GITHUB_WORKSPACE}/${{ github.event.inputs.service_name }}/deployment-${{ github.event.inputs.environment }}.yaml
+          yq e '.spec.template.spec.containers[] | select(.name == "${{ github.event.inputs.service_name }}-container").image = "${{ github.event.inputs.image }}"' ${{ github.event.inputs.service_name }}/deployment-${{ github.event.inputs.environment }}.yaml
 
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add ${GITHUB_WORKSPACE}/${{ github.event.inputs.service_name }}/deployment-${{ github.event.inputs.environment }}.yaml
-          git commit -m "Update ${GITHUB_WORKSPACE}/${{ github.event.inputs.service_name }}/deployment-${{ github.event.inputs.environment }}.yaml with new image"
+          git add ${{ github.event.inputs.service_name }}/deployment-${{ github.event.inputs.environment }}.yaml
+          git commit -m "Update ${{ github.event.inputs.service_name }}/deployment-${{ github.event.inputs.environment }}.yaml with new image"
 
       - name: Push changes
         uses: ad-m/github-push-action@master
