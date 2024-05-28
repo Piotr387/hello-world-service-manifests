@@ -39,6 +39,9 @@ jobs:
         run: |
           yq e '.spec.template.spec.containers[] | select(.name == "${{ github.event.inputs.service_name }}-container").image = "${{ github.event.inputs.image }}"' ${GITHUB_WORKSPACE}/${{ github.event.inputs.service_name }}/deployment-${{ github.event.inputs.environment }}.yaml
 
+      - name: Debug modified file
+        run: cat ${GITHUB_WORKSPACE}/${{ github.event.inputs.service_name }}/deployment-${{ github.event.inputs.environment }}.yaml
+
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
