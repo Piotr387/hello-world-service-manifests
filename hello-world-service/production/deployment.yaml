@@ -38,7 +38,3 @@ spec:
       port: 80 # Port to expose
       targetPort: 8080 # Port on the pod
       #nodePort: 32575  # NodePort range is typically 30000-32767
-  template:
-    spec:
-      containers:
-        - image: ajres/hello-world-service:b31d5aefe964a47494532fa66f2cefdfecf4810e
