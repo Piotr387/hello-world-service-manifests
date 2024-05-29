@@ -1,1 +1,1 @@
-### Doc: https://github.com/Piotr387/hello-world-service
+### Application: https://github.com/Piotr387/hello-world-service
