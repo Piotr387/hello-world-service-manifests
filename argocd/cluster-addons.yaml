@@ -16,7 +16,7 @@ spec:
     metadata:
       name: '{{.cluster}}-hello-world-service'
     spec:
-      project: cloud-project
+      project: default
       source:
         repoURL: https://github.com/Piotr387/hello-world-service-manifests.git
         targetRevision: HEAD
