@@ -40,12 +40,12 @@ jobs:
       - name: Update image in deployment.yaml
         run: |
           yq -i e '.spec.template.spec.containers[0].image = "${{ github.event.inputs.image }}"' \
-            ${{ github.event.inputs.service_name }}/deployment-${{ github.event.inputs.environment }}.yaml
+            ${{ github.event.inputs.service_name }}/${{ github.event.inputs.environment }}/deployment.yaml
 
       - name: Commit changes and Push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add ${{ github.event.inputs.service_name }}/deployment-${{ github.event.inputs.environment }}.yaml
-          git commit -m "Update ${{ github.event.inputs.service_name }}/deployment-${{ github.event.inputs.environment }}.yaml with new image"
+          git add ${{ github.event.inputs.service_name }}/${{ github.event.inputs.environment }}/deployment.yaml
+          git commit -m "Update ${{ github.event.inputs.service_name }}/${{ github.event.inputs.environment }}/deployment.yaml with new image"
           git push

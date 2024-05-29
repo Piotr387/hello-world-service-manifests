@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: hello-world-service
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - list:
+        elements:
+          - cluster: dev
+            url: https://kubernetes.default.svc
+          - cluster: production
+            url: https://kubernetes.default.svc
+  template:
+    metadata:
+      name: '{{.cluster}}-hello-world-service'
+    spec:
+      project: cloud-project
+      source:
+        repoURL: https://github.com/Piotr387/hello-world-service-manifests.git
+        targetRevision: HEAD
+        path: hello-world-service/{{.cluster}}
+      destination:
+        server: '{{.url}}'
+        namespace: '{{.cluster}}'
+
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+
+        automated:
+          selfHeal: true
+          prune: true
