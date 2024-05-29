@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: hello-world-service-container
-          image: ajres/hello-world-service:1dfbffc6bc00c1074c231098743f0222dca0515a
+          image: ajres/hello-world-service:b0a0e39569e83b56975ee548598c597961de7442
           ports:
             - containerPort: 8080
           env:
