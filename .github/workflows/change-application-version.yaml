@@ -3,6 +3,9 @@ name: Change application version in manifest to be deployed on certain environme
 on:
   workflow_dispatch:
     inputs:
+      commit_message:
+        description: 'Commit message:'
+        required: true
       service_name:
         description: 'Select service'
         required: true
@@ -47,5 +50,5 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add ${{ github.event.inputs.service_name }}/${{ github.event.inputs.environment }}/deployment.yaml
-          git commit -m "Update ${{ github.event.inputs.service_name }}/${{ github.event.inputs.environment }}/deployment.yaml with new image"
+          git commit -m "Update ${{ github.event.inputs.service_name }} - ${{ github.event.inputs.environment }} - ${{ github.event.inputs.commit_message }}"
           git push
