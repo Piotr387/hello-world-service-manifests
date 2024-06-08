@@ -1,6 +1,18 @@
 
 ### Application deployed on cluster: https://github.com/Piotr387/hello-world-service
 
+### Description:
+This repository represents the process of automatically deploying applications to a production cluster. The entire pipeline requires only a commit and push to a remote repository, such as GitHub, from the user.
+
+It also demonstrates that ArgoCD can manage multiple clusters, not just a single one. For this purpose, a cluster named "Dev" was created where the user simply provides the image tag and can easily build an application using GitHub Actions workflow.
+
+ArgoCD can be configured to automatically fetch changes from the repository (with a default interval of 3 minutes). However, in real-world scenarios, we often want changes to be fetched instantly. This is achieved with a webhook that pings ArgoCD to fetch the latest changes from the repository.
+
+A good practice is to use separate repositories: one for the application code and one for the manifests. This allows the repository owner to manage the manifests easily without cluttering the application code repository with unrelated commits.
+
+In section [Commands to set up k8s cluster](#Commands-to-set-up-k8s-cluster) we can see commands which are required to set up whole application. With this approach we can easily add extra cluster, application replicas if needed.
+
+
 ---
 ### Architecture of CI/CD process:
 ![](./docs/Chmury%20-%20GitHub%20Actions%20with%20ArgoCD.drawio.svg)
